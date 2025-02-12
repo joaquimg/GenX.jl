@@ -96,6 +96,10 @@ function fuel!(EP::Model, inputs::Dict, setup::Dict)
     SINGLE_FUEL = inputs["SINGLE_FUEL"]
     ALLAM_CYCLE_LOX = inputs["ALLAM_CYCLE_LOX"]
 
+    RESOURCES_BY_ZONE = map(1:Z) do z
+        return resources_in_zone_by_rid(gen, z)
+    end
+
     fuels = inputs["fuels"]
     fuel_costs = inputs["fuel_costs"]
     omega = inputs["omega"]
@@ -195,7 +199,7 @@ function fuel!(EP::Model, inputs::Dict, setup::Dict)
         sum(omega[t] * EP[:eCFuelStart][y, t] for t in 1:T))
     # zonal level total fuel cost for output
     @expression(EP, eZonalCFuelStart[z = 1:Z],
-        sum(EP[:ePlantCFuelStart][y] for y in resources_in_zone_by_rid(gen, z)))
+        sum(EP[:ePlantCFuelStart][y] for y in RESOURCES_BY_ZONE[z]))
 
     # Fuel cost for power generation
     # for multi-fuel resources
@@ -219,7 +223,7 @@ function fuel!(EP::Model, inputs::Dict, setup::Dict)
         sum(omega[t] * EP[:eCFuelOut][y, t] for t in 1:T))
     # zonal level total fuel cost for output
     @expression(EP, eZonalCFuelOut[z = 1:Z],
-        sum(EP[:ePlantCFuelOut][y] for y in resources_in_zone_by_rid(gen, z)))
+        sum(EP[:ePlantCFuelOut][y] for y in RESOURCES_BY_ZONE[z]))
 
     # system level total fuel cost for output
     @expression(EP, eTotalCFuelOut, sum(eZonalCFuelOut[z] for z in 1:Z))
