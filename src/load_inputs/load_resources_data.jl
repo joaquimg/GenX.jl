@@ -1478,7 +1478,6 @@ function add_resources_to_input_data!(inputs::Dict,
     end
 
     inputs["RESOURCES"] = gen
-
     return nothing
 end
 
