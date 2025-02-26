@@ -54,7 +54,7 @@ function fusion_capacity_reserve_margin_adjustment(EP::Model,
     component = gen[y]
     eTotalCap = EP[:eTotalCap][y]
 
-    capresfactor = inputs["DERATING_FACTOR"][component, capres_zone]
+    capresfactor = inputs["DERATING_FACTOR"][y, capres_zone]
     if capresfactor == 0.0
         return AffExpr.(zero.(timesteps))
     end
