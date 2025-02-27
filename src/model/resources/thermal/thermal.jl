@@ -25,7 +25,7 @@ function thermal!(EP::Model, inputs::Dict, setup::Dict)
     end
     ##CO2 Polcy Module Thermal Generation by zone
     THERM_ALL_BY_ZONE = map(1:Z) do z
-        return intersect(inputs["THERM_ALL"], resources_in_zone_by_rid(gen, z))
+        return intersect(THERM_ALL, resources_in_zone_by_rid(gen, z))
     end
     @expression(EP, eGenerationByThermAll[z = 1:Z, t = 1:T], # the unit is GW
         sum(EP[:vP][y, t]
