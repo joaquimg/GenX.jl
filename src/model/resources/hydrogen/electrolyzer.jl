@@ -85,7 +85,7 @@ function electrolyzer!(EP::Model, inputs::Dict, setup::Dict)
     ### Expressions ###
 
     ## Power Balance Expressions ##
-    ELECTROLYZERS_BY_ZONE = map(HYDROGEN_ZONES) do z
+    ELECTROLYZERS_BY_ZONE = map(1:Z) do z
         return intersect(ELECTROLYZERS, resources_in_zone_by_rid(gen, z))
     end
     @expression(EP, ePowerBalanceElectrolyzers[t in 1:T, z in 1:Z],
